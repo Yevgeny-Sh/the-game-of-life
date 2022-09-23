@@ -1,5 +1,5 @@
 import React from "react";
 
-export default function Square() {
-  return <div>Square</div>;
+export default function Square(props) {
+  return <div className="square"></div>;
 }
