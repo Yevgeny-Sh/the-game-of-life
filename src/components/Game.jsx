@@ -186,10 +186,12 @@ export default function Game() {
 
   return (
     <div className="game-div" ref={boardRef}>
-      <h1>game</h1>
-      <h2>generetion:{generetion} </h2>
-
-      {/* <h4>change grid size</h4>
+      <div className="headers">
+        <h1>game</h1>
+        <h2>generation :{generetion} </h2>
+      </div>
+      <div className="instructions">
+        {/* <h4>change grid size</h4>
       <input
         type="range"
         min="1"
@@ -198,25 +200,29 @@ export default function Game() {
         onChange={(e) => resizeBoard(Number(e.target.value))}
       /> */}
 
-      <h4>change seed size</h4>
-      <input
-        // id="reversedRange"
-        type="range"
-        min="1"
-        max="10"
-        value={seed}
-        onChange={(e) => setSeed(Number(e.target.value))}
-      />
+        <h4>change seed size</h4>
+        <input
+          // id="reversedRange"
+          type="range"
+          min="1"
+          max="10"
+          value={seed}
+          onChange={(e) => setSeed(Number(e.target.value))}
+        />
 
-      <h4>change game speed</h4>
-      <input
-        type="range"
-        min="1"
-        max="1000"
-        id="reversedRange"
-        value={speed}
-        onChange={(e) => setSpeed(Number(e.target.value))}
-      />
+        <h4>change game speed</h4>
+        <input
+          type="range"
+          min="1"
+          max="1000"
+          id="reversedRange"
+          value={speed}
+          onChange={(e) => setSpeed(Number(e.target.value))}
+        />
+        <h4>
+          click on a square to revive it, or choose seed size, and hit play!
+        </h4>
+      </div>
 
       <button className=" seed-btn" onClick={() => seedArr(board)}>
         seed

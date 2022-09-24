@@ -40,9 +40,9 @@ button {
   align-items: stretch;
 }
 .game-div {
-  min-height: 100%;
-  min-width: 100%;
-  background-color: blueviolet;
+  /* min-height: 100%;
+  min-width: 100%; */
+  background-color: aqua;
 }
 
 input[type="range"] {
@@ -63,4 +63,16 @@ input[type="range"]::-webkit-slider-thumb {
   width: 10px;
   height: 26px;
   border-radius: 20%;
+}
+
+/* .headers {
+  background-color: aqua;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+} */
+h1,
+h2,
+div {
+  text-align: center;
 }
