@@ -10,7 +10,7 @@
 }
 
 .board {
-  --grid-size: 5;
+  --grid-size: 10;
   /* Start with 5x5 */
   display: grid;
   width: 100%;

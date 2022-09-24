@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import Board from "./Board";
 
 export default function Game() {
@@ -15,7 +15,6 @@ export default function Game() {
 
   function seedArr(arr) {
     const newArr = [...arr];
-    console.log(newArr);
     for (let i = 0; i < gridSize; i++) {
       for (let j = 0; j < gridSize; j++) {
         newArr[i][j] = false;
@@ -29,33 +28,32 @@ export default function Game() {
 
   function aliveNeighbors(row, col) {
     let count = 0;
-    // if (row - 1 >= 0) {
-    if (board[row - 1][col] === true) count++;
-    // }
-    //if (row - 1 >= 0 && col - 1 >= 0) {
-    if (board[row - 1][col - 1] === true) count++;
-    //}
-    // if (row - 1 >= 0 && col + 1 < gridSize) {
-    if (board[row - 1][col + 1] === true) count++;
-    // }
-    // if (col - 1 >= 0) {
-    if (board[row][col - 1] === true) count++;
-    // }
-    // if (col + 1 < gridSize) {
-    if (board[row][col + 1] === true) count++;
-    // }
-    /// if (row + 1 < gridSize) {
-    if (board[row + 1][col] === true) count++;
-    // }
-    // if (row + 1 < gridSize && col - 1 >= 0) {
-    if (board[row + 1][col - 1] === true) count++;
-    // }
-    // if (row + 1 < gridSize && col + 1 < gridSize) {
-    if (board[row + 1][col + 1] === true) count++;
-    // }
-    console.log("count");
-
-    console.log(count);
+    if (row - 1 >= 0) {
+      if (board[row - 1][col] === true) count++;
+    }
+    if (row - 1 >= 0 && col - 1 >= 0) {
+      if (board[row - 1][col - 1] === true) count++;
+    }
+    if (row - 1 >= 0 && col + 1 < gridSize) {
+      if (board[row - 1][col + 1] === true) count++;
+    }
+    if (col - 1 >= 0) {
+      if (board[row][col - 1] === true) count++;
+    }
+    if (col + 1 < gridSize) {
+      if (board[row][col + 1] === true) count++;
+    }
+    if (row + 1 < gridSize) {
+      if (board[row + 1][col] === true) count++;
+    }
+    if (row + 1 < gridSize && col - 1 >= 0) {
+      if (board[row + 1][col - 1] === true) count++;
+    }
+    if (row + 1 < gridSize && col + 1 < gridSize) {
+      if (board[row + 1][col + 1] === true) count++;
+    }
+    // console.log("count");
+    // console.log(count);
     return count;
   }
 
@@ -67,7 +65,6 @@ export default function Game() {
     const newBoard = board.slice();
     newBoard[x][y] = !newBoard[x][y];
     setBoard(newBoard);
-    console.log(x, y);
   }
 
   function handlePlay() {
@@ -77,6 +74,7 @@ export default function Game() {
         //checks each cell
         //count nrighbors
         let neighbors = aliveNeighbors(i, j);
+        console.log(neighbors);
         if (isAlive(i, j)) {
           //
           if (neighbors <= 2 || neighbors >= 3) {
@@ -104,6 +102,14 @@ export default function Game() {
       </button>
       <button className="btn seed-btn" onClick={() => handlePlay()}>
         play
+      </button>
+      <button
+        className="btn log-btn"
+        onClick={() => {
+          console.log(board);
+        }}
+      >
+        log board
       </button>
       <Board
         board={board}
