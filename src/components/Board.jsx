@@ -12,6 +12,7 @@ export default function Board(props) {
           setAlive={props.setAlive}
           className={props.isAlive(i, j) === true ? "green" : "red"}
           key={` ${i}+${j}`}
+          aliveNeighbors={props.aliveNeighbors}
         >
           {` ${props.size}`}
         </Square>

@@ -11,7 +11,7 @@
 
 .board {
   --grid-size: 10;
-  /* Start with 5x5 */
+  /* Start with 10x10 */
   display: grid;
   width: 100%;
   height: 100%;

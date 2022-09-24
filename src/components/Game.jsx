@@ -26,6 +26,16 @@ export default function Game() {
     setBoard(newArr);
   }
 
+  function isAlive(x, y) {
+    return board[x][y];
+  }
+
+  function setAlive(x, y) {
+    const newBoard = board.slice();
+    newBoard[x][y] = !newBoard[x][y];
+    setBoard(newBoard);
+  }
+
   function aliveNeighbors(row, col) {
     let count = 0;
     if (row - 1 >= 0) {
@@ -52,33 +62,21 @@ export default function Game() {
     if (row + 1 < gridSize && col + 1 < gridSize) {
       if (board[row + 1][col + 1] === true) count++;
     }
-    // console.log("count");
-    // console.log(count);
     return count;
   }
 
-  function isAlive(x, y) {
-    return board[x][y];
-  }
-
-  function setAlive(x, y) {
-    const newBoard = board.slice();
-    newBoard[x][y] = !newBoard[x][y];
-    setBoard(newBoard);
-  }
-
   function handlePlay() {
-    const newGrid = board.slice();
+    let newGrid = Array(gridSize)
+      .fill()
+      .map(() => Array(gridSize).fill(false));
     for (let i = 0; i < gridSize; i++) {
       for (let j = 0; j < gridSize; j++) {
-        //checks each cell
-        //count nrighbors
         let neighbors = aliveNeighbors(i, j);
-        console.log(neighbors);
         if (isAlive(i, j)) {
-          //
-          if (neighbors <= 2 || neighbors >= 3) {
+          if (neighbors < 2 || neighbors > 3) {
             newGrid[i][j] = false;
+          } else {
+            newGrid[i][j] = true;
           }
           //cell is dead
         } else {
@@ -95,7 +93,7 @@ export default function Game() {
   return (
     <div className="game-div" ref={boardRef}>
       <h1>game</h1>
-      <h1>generetion:{generetion} </h1>
+      <h2>generetion:{generetion} </h2>
 
       <button className="btn play-btn" onClick={() => seedArr(board)}>
         seed
@@ -116,6 +114,7 @@ export default function Game() {
         size={gridSize}
         isAlive={isAlive}
         setAlive={setAlive}
+        aliveNeighbors={aliveNeighbors}
       ></Board>
     </div>
   );
