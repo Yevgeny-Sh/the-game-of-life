@@ -13,9 +13,7 @@ export default function Board(props) {
           className={props.isAlive(i, j) === true ? "green" : "red"}
           key={` ${i}+${j}`}
           aliveNeighbors={props.aliveNeighbors}
-        >
-          {` ${props.size}`}
-        </Square>
+        ></Square>
       );
     });
   });

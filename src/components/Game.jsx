@@ -1,9 +1,10 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Board from "./Board";
 
 export default function Game() {
   const boardRef = useRef(null);
-  const [speed, setSpeed] = useState(1000);
+  //const [speed, setSpeed] = useState(1000);
+  const [isPlaying, setPlaying] = useState(false);
 
   const [gridSize, setGridSize] = useState(10);
   const [seed, setSeed] = useState(4);
@@ -67,6 +68,7 @@ export default function Game() {
   }
 
   function handlePlay() {
+    console.log("in handle play");
     let newGrid = Array(gridSize)
       .fill()
       .map(() => Array(gridSize).fill(false));
@@ -87,14 +89,19 @@ export default function Game() {
         }
       }
     }
+
     setBoard(newGrid);
-    //let g = generetion + 1;
-    setGeneretion(generetion + 1);
+    let g = generetion + 1;
+    setGeneretion(g);
   }
 
   //   function playButton() {
-  //     //clearInterval(intervalId);
-  //     let intervalId = setInterval(handlePlay, 1000);
+  //     useEffect(() => {
+  //       const interval = setInterval(() => {
+  //         console.log("This will run every second!");
+  //       }, 1000);
+  //       return () => clearInterval(interval);
+  //     }, []);
   //   }
   //   function wtf() {
   //     console.log("wtf");
@@ -111,13 +118,16 @@ export default function Game() {
       <button className="btn seed-btn" onClick={() => handlePlay()}>
         play
       </button>
-      <button
+      {/* <button
         className="btn log-btn"
         onClick={() => {
           console.log(board);
         }}
       >
         log board
+      </button> */}
+      <button onClick={() => setPlaying(!isPlaying)}>
+        {isPlaying ? "pause" : "play"}
       </button>
       <Board
         board={board}
