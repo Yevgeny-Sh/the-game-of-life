@@ -3,16 +3,23 @@
   margin: 0;
   box-sizing: border-box;
 }
-
-.btn {
-  --size: 2rem; /* [1] */
-  height: var(--size);
-
-  width: var(--size); /* [3] */
-}
 button {
   height: 100%;
   width: 100%;
+}
+.btn {
+  --size: 2rem;
+  height: var(--size);
+  width: var(--size);
+}
+.top-btn {
+  height: 3rem;
+  width: 100%;
+}
+.top-btn-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 .board {

@@ -166,14 +166,18 @@ export default function Game() {
           click on a square to revive it, or choose seed size, and hit play!
         </h4>
       </div>
+      <div className="top-btn-container">
+        <button className="top-btn seed-btn" onClick={() => seedArr(board)}>
+          seed
+        </button>
 
-      <button className=" seed-btn" onClick={() => seedArr(board)}>
-        seed
-      </button>
-
-      <button className=" play-btn" onClick={() => setPlaying(!isPlaying)}>
-        {isPlaying ? "pause" : "play"}
-      </button>
+        <button
+          className="top-btn play-btn"
+          onClick={() => setPlaying(!isPlaying)}
+        >
+          {isPlaying ? "pause" : "play"}
+        </button>
+      </div>
       <Board
         board={board}
         size={gridSize}
