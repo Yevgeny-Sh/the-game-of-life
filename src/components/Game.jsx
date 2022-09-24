@@ -3,6 +3,8 @@ import Board from "./Board";
 
 export default function Game() {
   const boardRef = useRef(null);
+  const interval = useRef(null);
+
   //const [speed, setSpeed] = useState(1000);
   const [isPlaying, setPlaying] = useState(false);
 
@@ -90,23 +92,24 @@ export default function Game() {
       }
     }
 
+    setGeneretion((prevGen) => prevGen + 1);
     setBoard(newGrid);
-    let g = generetion + 1;
-    setGeneretion(g);
   }
 
-  //   function playButton() {
-  //     useEffect(() => {
-  //       const interval = setInterval(() => {
-  //         console.log("This will run every second!");
-  //       }, 1000);
-  //       return () => clearInterval(interval);
-  //     }, []);
-  //   }
-  //   function wtf() {
-  //     console.log("wtf");
-  //   }
-  //   let intervalId = setInterval(handlePlay, 1000);
+  useEffect(() => {
+    if (isPlaying) {
+      interval.current = setInterval(() => {
+        handlePlay();
+      }, 1000);
+    } else {
+      clearInterval(interval.current);
+    }
+
+    return () => {
+      clearInterval(interval.current);
+    };
+  }, [isPlaying, board, handlePlay]);
+
   return (
     <div className="game-div" ref={boardRef}>
       <h1>game</h1>
@@ -118,14 +121,7 @@ export default function Game() {
       <button className="btn seed-btn" onClick={() => handlePlay()}>
         play
       </button>
-      {/* <button
-        className="btn log-btn"
-        onClick={() => {
-          console.log(board);
-        }}
-      >
-        log board
-      </button> */}
+
       <button onClick={() => setPlaying(!isPlaying)}>
         {isPlaying ? "pause" : "play"}
       </button>
