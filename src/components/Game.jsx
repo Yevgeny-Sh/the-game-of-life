@@ -5,7 +5,7 @@ export default function Game() {
   const boardRef = useRef(null);
   const interval = useRef(null);
 
-  const [speed, setSpeed] = useState(1000);
+  const [speed, setSpeed] = useState(500);
   const [isPlaying, setPlaying] = useState(false);
 
   // const [gridSize, setGridSize] = useState(10);
@@ -40,62 +40,6 @@ export default function Game() {
     newBoard[x][y] = !newBoard[x][y];
     setBoard(newBoard);
   }
-
-  // function aliveNeighbors(row, col) {
-  //   let count = 0;
-  //   if (row - 1 >= 0) {
-  //     if (board[row - 1][col] === true) count++;
-  //   }
-  //   if (row - 1 >= 0 && col - 1 >= 0) {
-  //     if (board[row - 1][col - 1] === true) count++;
-  //   }
-  //   if (row - 1 >= 0 && col + 1 < gridSize) {
-  //     if (board[row - 1][col + 1] === true) count++;
-  //   }
-  //   if (col - 1 >= 0) {
-  //     if (board[row][col - 1] === true) count++;
-  //   }
-  //   if (col + 1 < gridSize) {
-  //     if (board[row][col + 1] === true) count++;
-  //   }
-  //   if (row + 1 < gridSize) {
-  //     if (board[row + 1][col] === true) count++;
-  //   }
-  //   if (row + 1 < gridSize && col - 1 >= 0) {
-  //     if (board[row + 1][col - 1] === true) count++;
-  //   }
-  //   if (row + 1 < gridSize && col + 1 < gridSize) {
-  //     if (board[row + 1][col + 1] === true) count++;
-  //   }
-  //   return count;
-  // }
-
-  // function handlePlay() {
-  //   console.log("in handle play");
-  //   let newGrid = Array(gridSize)
-  //     .fill()
-  //     .map(() => Array(gridSize).fill(false));
-  //   for (let i = 0; i < gridSize; i++) {
-  //     for (let j = 0; j < gridSize; j++) {
-  //       let neighbors = aliveNeighbors(i, j);
-  //       if (isAlive(i, j)) {
-  //         if (neighbors < 2 || neighbors > 3) {
-  //           newGrid[i][j] = false;
-  //         } else {
-  //           newGrid[i][j] = true;
-  //         }
-  //         //cell is dead
-  //       } else {
-  //         if (neighbors === 3) {
-  //           newGrid[i][j] = true;
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   setGeneretion((prevGen) => prevGen + 1);
-  //   setBoard(newGrid);
-  // }
 
   const isAlive = useCallback(
     (x, y) => {
@@ -202,7 +146,6 @@ export default function Game() {
 
         <h4>change seed size</h4>
         <input
-          // id="reversedRange"
           type="range"
           min="1"
           max="10"
