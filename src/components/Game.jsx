@@ -8,7 +8,8 @@ export default function Game() {
   const [speed, setSpeed] = useState(1000);
   const [isPlaying, setPlaying] = useState(false);
 
-  const [gridSize, setGridSize] = useState(10);
+  // const [gridSize, setGridSize] = useState(10);
+  const gridSize = 10;
   const [seed, setSeed] = useState(4);
   const [board, setBoard] = useState(
     Array(gridSize)
