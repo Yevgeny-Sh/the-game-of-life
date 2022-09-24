@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Board from "./Board";
 
 export default function Game() {
@@ -30,9 +30,9 @@ export default function Game() {
     setBoard(newArr);
   }
 
-  function isAlive(x, y) {
-    return board[x][y];
-  }
+  // function isAlive(x, y) {
+  //   return board[x][y];
+  // }
 
   function setAlive(x, y) {
     const newBoard = board.slice();
@@ -40,37 +40,102 @@ export default function Game() {
     setBoard(newBoard);
   }
 
-  function aliveNeighbors(row, col) {
-    let count = 0;
-    if (row - 1 >= 0) {
-      if (board[row - 1][col] === true) count++;
-    }
-    if (row - 1 >= 0 && col - 1 >= 0) {
-      if (board[row - 1][col - 1] === true) count++;
-    }
-    if (row - 1 >= 0 && col + 1 < gridSize) {
-      if (board[row - 1][col + 1] === true) count++;
-    }
-    if (col - 1 >= 0) {
-      if (board[row][col - 1] === true) count++;
-    }
-    if (col + 1 < gridSize) {
-      if (board[row][col + 1] === true) count++;
-    }
-    if (row + 1 < gridSize) {
-      if (board[row + 1][col] === true) count++;
-    }
-    if (row + 1 < gridSize && col - 1 >= 0) {
-      if (board[row + 1][col - 1] === true) count++;
-    }
-    if (row + 1 < gridSize && col + 1 < gridSize) {
-      if (board[row + 1][col + 1] === true) count++;
-    }
-    return count;
-  }
+  // function aliveNeighbors(row, col) {
+  //   let count = 0;
+  //   if (row - 1 >= 0) {
+  //     if (board[row - 1][col] === true) count++;
+  //   }
+  //   if (row - 1 >= 0 && col - 1 >= 0) {
+  //     if (board[row - 1][col - 1] === true) count++;
+  //   }
+  //   if (row - 1 >= 0 && col + 1 < gridSize) {
+  //     if (board[row - 1][col + 1] === true) count++;
+  //   }
+  //   if (col - 1 >= 0) {
+  //     if (board[row][col - 1] === true) count++;
+  //   }
+  //   if (col + 1 < gridSize) {
+  //     if (board[row][col + 1] === true) count++;
+  //   }
+  //   if (row + 1 < gridSize) {
+  //     if (board[row + 1][col] === true) count++;
+  //   }
+  //   if (row + 1 < gridSize && col - 1 >= 0) {
+  //     if (board[row + 1][col - 1] === true) count++;
+  //   }
+  //   if (row + 1 < gridSize && col + 1 < gridSize) {
+  //     if (board[row + 1][col + 1] === true) count++;
+  //   }
+  //   return count;
+  // }
 
-  function handlePlay() {
-    console.log("in handle play");
+  // function handlePlay() {
+  //   console.log("in handle play");
+  //   let newGrid = Array(gridSize)
+  //     .fill()
+  //     .map(() => Array(gridSize).fill(false));
+  //   for (let i = 0; i < gridSize; i++) {
+  //     for (let j = 0; j < gridSize; j++) {
+  //       let neighbors = aliveNeighbors(i, j);
+  //       if (isAlive(i, j)) {
+  //         if (neighbors < 2 || neighbors > 3) {
+  //           newGrid[i][j] = false;
+  //         } else {
+  //           newGrid[i][j] = true;
+  //         }
+  //         //cell is dead
+  //       } else {
+  //         if (neighbors === 3) {
+  //           newGrid[i][j] = true;
+  //         }
+  //       }
+  //     }
+  //   }
+
+  //   setGeneretion((prevGen) => prevGen + 1);
+  //   setBoard(newGrid);
+  // }
+
+  const isAlive = useCallback(
+    (x, y) => {
+      return board[x][y];
+    },
+    [board]
+  );
+
+  const aliveNeighbors = useCallback(
+    (row, col) => {
+      let count = 0;
+      if (row - 1 >= 0) {
+        if (board[row - 1][col] === true) count++;
+      }
+      if (row - 1 >= 0 && col - 1 >= 0) {
+        if (board[row - 1][col - 1] === true) count++;
+      }
+      if (row - 1 >= 0 && col + 1 < gridSize) {
+        if (board[row - 1][col + 1] === true) count++;
+      }
+      if (col - 1 >= 0) {
+        if (board[row][col - 1] === true) count++;
+      }
+      if (col + 1 < gridSize) {
+        if (board[row][col + 1] === true) count++;
+      }
+      if (row + 1 < gridSize) {
+        if (board[row + 1][col] === true) count++;
+      }
+      if (row + 1 < gridSize && col - 1 >= 0) {
+        if (board[row + 1][col - 1] === true) count++;
+      }
+      if (row + 1 < gridSize && col + 1 < gridSize) {
+        if (board[row + 1][col + 1] === true) count++;
+      }
+      return count;
+    },
+    [board, gridSize]
+  );
+
+  const x = useCallback(() => {
     let newGrid = Array(gridSize)
       .fill()
       .map(() => Array(gridSize).fill(false));
@@ -94,12 +159,12 @@ export default function Game() {
 
     setGeneretion((prevGen) => prevGen + 1);
     setBoard(newGrid);
-  }
+  }, [aliveNeighbors, gridSize, isAlive]);
 
   useEffect(() => {
     if (isPlaying) {
       interval.current = setInterval(() => {
-        handlePlay();
+        x();
       }, speed);
     } else {
       clearInterval(interval.current);
@@ -108,7 +173,7 @@ export default function Game() {
     return () => {
       clearInterval(interval.current);
     };
-  }, [isPlaying, board, speed]);
+  }, [isPlaying, board, speed, x]);
 
   function resizeBoard(size) {
     setGridSize(size);
