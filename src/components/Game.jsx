@@ -3,6 +3,7 @@ import Board from "./Board";
 
 export default function Game() {
   const boardRef = useRef(null);
+  const [speed, setSpeed] = useState(1000);
 
   const [gridSize, setGridSize] = useState(10);
   const [seed, setSeed] = useState(4);
@@ -87,9 +88,18 @@ export default function Game() {
       }
     }
     setBoard(newGrid);
+    //let g = generetion + 1;
     setGeneretion(generetion + 1);
   }
 
+  //   function playButton() {
+  //     //clearInterval(intervalId);
+  //     let intervalId = setInterval(handlePlay, 1000);
+  //   }
+  //   function wtf() {
+  //     console.log("wtf");
+  //   }
+  //   let intervalId = setInterval(handlePlay, 1000);
   return (
     <div className="game-div" ref={boardRef}>
       <h1>game</h1>
