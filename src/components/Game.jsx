@@ -175,27 +175,27 @@ export default function Game() {
     };
   }, [isPlaying, board, speed, x]);
 
-  function resizeBoard(size) {
-    setGridSize(size);
-    let newSizeArr = Array(size)
-      .fill()
-      .map(() => Array(gridSize).fill(false));
-    setBoard(newSizeArr);
-  }
+  // function resizeBoard(size) {
+  //   setGridSize(size);
+  //   let newSizeArr = Array(size)
+  //     .fill()
+  //     .map(() => Array(gridSize).fill(false));
+  //   setBoard(newSizeArr);
+  // }
 
   return (
     <div className="game-div" ref={boardRef}>
       <h1>game</h1>
       <h2>generetion:{generetion} </h2>
 
-      <h4>change grid size</h4>
+      {/* <h4>change grid size</h4>
       <input
         type="range"
         min="1"
         max="30"
         value={gridSize}
         onChange={(e) => resizeBoard(Number(e.target.value))}
-      />
+      /> */}
 
       <h4>change seed size</h4>
       <input
