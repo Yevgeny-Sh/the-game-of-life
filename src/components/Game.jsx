@@ -5,7 +5,7 @@ export default function Game() {
   const boardRef = useRef(null);
   const interval = useRef(null);
 
-  //const [speed, setSpeed] = useState(1000);
+  const [speed, setSpeed] = useState(1000);
   const [isPlaying, setPlaying] = useState(false);
 
   const [gridSize, setGridSize] = useState(10);
@@ -100,7 +100,7 @@ export default function Game() {
     if (isPlaying) {
       interval.current = setInterval(() => {
         handlePlay();
-      }, 1000);
+      }, speed);
     } else {
       clearInterval(interval.current);
     }
@@ -108,21 +108,55 @@ export default function Game() {
     return () => {
       clearInterval(interval.current);
     };
-  }, [isPlaying, board, handlePlay]);
+  }, [isPlaying, board, speed]);
+
+  function resizeBoard(size) {
+    setGridSize(size);
+    let newSizeArr = Array(size)
+      .fill()
+      .map(() => Array(gridSize).fill(false));
+    setBoard(newSizeArr);
+  }
 
   return (
     <div className="game-div" ref={boardRef}>
       <h1>game</h1>
       <h2>generetion:{generetion} </h2>
 
-      <button className="btn play-btn" onClick={() => seedArr(board)}>
+      <h4>change grid size</h4>
+      <input
+        type="range"
+        min="1"
+        max="30"
+        value={gridSize}
+        onChange={(e) => resizeBoard(Number(e.target.value))}
+      />
+
+      <h4>change seed size</h4>
+      <input
+        // id="reversedRange"
+        type="range"
+        min="1"
+        max="10"
+        value={seed}
+        onChange={(e) => setSeed(Number(e.target.value))}
+      />
+
+      <h4>change game speed</h4>
+      <input
+        type="range"
+        min="1"
+        max="1000"
+        id="reversedRange"
+        value={speed}
+        onChange={(e) => setSpeed(Number(e.target.value))}
+      />
+
+      <button className=" seed-btn" onClick={() => seedArr(board)}>
         seed
       </button>
-      <button className="btn seed-btn" onClick={() => handlePlay()}>
-        play
-      </button>
 
-      <button onClick={() => setPlaying(!isPlaying)}>
+      <button className=" play-btn" onClick={() => setPlaying(!isPlaying)}>
         {isPlaying ? "pause" : "play"}
       </button>
       <Board
