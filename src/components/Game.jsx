@@ -112,7 +112,6 @@ export default function Game() {
     return () => {
       clearInterval(intervalRef.current);
     };
-    //wtf is x
   }, [isPlaying, board, speed, handleTurn, gridSize]);
 
   function resizeBoard(size) {
