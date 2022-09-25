@@ -8,7 +8,6 @@ export default function Game() {
   const [isPlaying, setPlaying] = useState(false);
 
   const [gridSize, setGridSize] = useState(10);
-  // const gridSize = 10;
   const [seed, setSeed] = useState(4);
   const [board, setBoard] = useState(
     Array(gridSize)
@@ -75,7 +74,7 @@ export default function Game() {
     [board, gridSize]
   );
 
-  const x = useCallback(() => {
+  const handleTurn = useCallback(() => {
     let newGrid = Array(gridSize)
       .fill()
       .map(() => Array(gridSize).fill(false));
@@ -102,11 +101,9 @@ export default function Game() {
   }, [aliveNeighbors, gridSize, isAlive]);
 
   useEffect(() => {
-    // boardRef.current.style.setProperty("--grid-size", gridSize);
-
     if (isPlaying) {
       intervalRef.current = setInterval(() => {
-        x();
+        handleTurn();
       }, speed);
     } else {
       clearInterval(intervalRef.current);
@@ -116,7 +113,7 @@ export default function Game() {
       clearInterval(intervalRef.current);
     };
     //wtf is x
-  }, [isPlaying, board, speed, x, gridSize]);
+  }, [isPlaying, board, speed, handleTurn, gridSize]);
 
   function resizeBoard(size) {
     setGridSize(size);
