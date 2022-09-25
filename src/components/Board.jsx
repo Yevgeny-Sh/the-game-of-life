@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import Square from "./Square";
 
 export default function Board(props) {
+  const boardRef = useRef(null);
+
+  useEffect(() => {
+    boardRef.current.style.setProperty("--grid-size", props.size);
+  }, [props.size]);
+
   let sqaures = props.board.map((col, i) => {
     return col.map((sqr, j) => {
       return (
@@ -20,7 +26,9 @@ export default function Board(props) {
 
   return (
     <div className="board-container">
-      <div className="board">{sqaures}</div>
+      <div ref={boardRef} className="board">
+        {sqaures}
+      </div>
     </div>
   );
 }

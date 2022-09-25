@@ -2,14 +2,13 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Board from "./Board";
 
 export default function Game() {
-  const boardRef = useRef(null);
-  const interval = useRef(null);
+  const intervalRef = useRef(null);
 
   const [speed, setSpeed] = useState(500);
   const [isPlaying, setPlaying] = useState(false);
 
-  // const [gridSize, setGridSize] = useState(10);
-  const gridSize = 10;
+  const [gridSize, setGridSize] = useState(10);
+  // const gridSize = 10;
   const [seed, setSeed] = useState(4);
   const [board, setBoard] = useState(
     Array(gridSize)
@@ -30,10 +29,6 @@ export default function Game() {
     }
     setBoard(newArr);
   }
-
-  // function isAlive(x, y) {
-  //   return board[x][y];
-  // }
 
   function setAlive(x, y) {
     const newBoard = board.slice();
@@ -107,42 +102,45 @@ export default function Game() {
   }, [aliveNeighbors, gridSize, isAlive]);
 
   useEffect(() => {
+    // boardRef.current.style.setProperty("--grid-size", gridSize);
+
     if (isPlaying) {
-      interval.current = setInterval(() => {
+      intervalRef.current = setInterval(() => {
         x();
       }, speed);
     } else {
-      clearInterval(interval.current);
+      clearInterval(intervalRef.current);
     }
 
     return () => {
-      clearInterval(interval.current);
+      clearInterval(intervalRef.current);
     };
-  }, [isPlaying, board, speed, x]);
+    //wtf is x
+  }, [isPlaying, board, speed, x, gridSize]);
 
-  // function resizeBoard(size) {
-  //   setGridSize(size);
-  //   let newSizeArr = Array(size)
-  //     .fill()
-  //     .map(() => Array(gridSize).fill(false));
-  //   setBoard(newSizeArr);
-  // }
+  function resizeBoard(size) {
+    setGridSize(size);
+    let newSizeArr = Array(size)
+      .fill()
+      .map(() => Array(size).fill(false));
+    setBoard(newSizeArr);
+  }
 
   return (
-    <div className="game-div" ref={boardRef}>
+    <div className="game-div">
       <div className="headers">
         <h1>game</h1>
         <h2>generation :{generetion} </h2>
       </div>
       <div className="instructions">
-        {/* <h4>change grid size</h4>
-      <input
-        type="range"
-        min="1"
-        max="30"
-        value={gridSize}
-        onChange={(e) => resizeBoard(Number(e.target.value))}
-      /> */}
+        <h4>change grid size</h4>
+        <input
+          type="range"
+          min="1"
+          max="30"
+          value={gridSize}
+          onChange={(e) => resizeBoard(Number(e.target.value))}
+        />
 
         <h4>change seed size</h4>
         <input
