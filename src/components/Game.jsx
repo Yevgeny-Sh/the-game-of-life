@@ -45,6 +45,7 @@ export default function Game() {
   const aliveNeighbors = useCallback(
     (row, col) => {
       let count = 0;
+      //
       if (row - 1 >= 0) {
         if (board[row - 1][col] === true) count++;
       }
@@ -78,19 +79,19 @@ export default function Game() {
     let newGrid = Array(gridSize)
       .fill()
       .map(() => Array(gridSize).fill(false));
-    for (let i = 0; i < gridSize; i++) {
-      for (let j = 0; j < gridSize; j++) {
-        let neighbors = aliveNeighbors(i, j);
-        if (isAlive(i, j)) {
+    for (let rows = 0; rows < gridSize; rows++) {
+      for (let col = 0; col < gridSize; col++) {
+        let neighbors = aliveNeighbors(rows, col);
+        if (isAlive(rows, col)) {
           if (neighbors < 2 || neighbors > 3) {
-            newGrid[i][j] = false;
+            newGrid[rows][col] = false;
           } else {
-            newGrid[i][j] = true;
+            newGrid[rows][col] = true;
           }
-          //cell is dead
+          //if cell is dead
         } else {
           if (neighbors === 3) {
-            newGrid[i][j] = true;
+            newGrid[rows][col] = true;
           }
         }
       }
