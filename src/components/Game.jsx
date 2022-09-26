@@ -4,6 +4,8 @@ import Board from "./Board";
 export default function Game() {
   const intervalRef = useRef(null);
 
+  const [gameRules, setGameRules] = useState("connways");
+
   const [speed, setSpeed] = useState(500);
   const [isPlaying, setPlaying] = useState(false);
 
@@ -45,28 +47,35 @@ export default function Game() {
   const aliveNeighbors = useCallback(
     (row, col) => {
       let count = 0;
-      //
+      // check north square
       if (row - 1 >= 0) {
         if (board[row - 1][col] === true) count++;
       }
+      //check north west square
       if (row - 1 >= 0 && col - 1 >= 0) {
         if (board[row - 1][col - 1] === true) count++;
       }
+      //check north east
       if (row - 1 >= 0 && col + 1 < gridSize) {
         if (board[row - 1][col + 1] === true) count++;
       }
+      //check west
       if (col - 1 >= 0) {
         if (board[row][col - 1] === true) count++;
       }
+      //chec east
       if (col + 1 < gridSize) {
         if (board[row][col + 1] === true) count++;
       }
+      // check south
       if (row + 1 < gridSize) {
         if (board[row + 1][col] === true) count++;
       }
+      //check south west
       if (row + 1 < gridSize && col - 1 >= 0) {
         if (board[row + 1][col - 1] === true) count++;
       }
+      //check south east
       if (row + 1 < gridSize && col + 1 < gridSize) {
         if (board[row + 1][col + 1] === true) count++;
       }
@@ -75,7 +84,7 @@ export default function Game() {
     [board, gridSize]
   );
 
-  const handleTurn = useCallback(() => {
+  const handleTurnConnwaysRules = useCallback(() => {
     let newGrid = Array(gridSize)
       .fill()
       .map(() => Array(gridSize).fill(false));
@@ -101,11 +110,54 @@ export default function Game() {
     setBoard(newGrid);
   }, [aliveNeighbors, gridSize, isAlive]);
 
+  //diffrent game rules
+  const handleTurnhyperActiveLifeRules = useCallback(() => {
+    let newGrid = Array(gridSize)
+      .fill()
+      .map(() => Array(gridSize).fill(false));
+    for (let rows = 0; rows < gridSize; rows++) {
+      for (let col = 0; col < gridSize; col++) {
+        let neighbors = aliveNeighbors(rows, col);
+        if (isAlive(rows, col)) {
+          if (neighbors < 2 || neighbors > 5) {
+            newGrid[rows][col] = false;
+          } else {
+            newGrid[rows][col] = true;
+          }
+          //if cell is dead
+        } else {
+          if (neighbors === 3) {
+            newGrid[rows][col] = true;
+          }
+        }
+      }
+    }
+
+    setGeneretion((prevGen) => prevGen + 1);
+    setBoard(newGrid);
+  }, [aliveNeighbors, gridSize, isAlive]);
+
   useEffect(() => {
     if (isPlaying) {
-      intervalRef.current = setInterval(() => {
-        handleTurn();
-      }, speed);
+      switch (gameRules) {
+        case "connways":
+          intervalRef.current = setInterval(() => {
+            handleTurnConnwaysRules();
+          }, speed);
+          break;
+        case "hyper active life rules":
+          intervalRef.current = setInterval(() => {
+            handleTurnhyperActiveLifeRules();
+          }, speed);
+          break;
+        default:
+          intervalRef.current = setInterval(() => {
+            handleTurnConnwaysRules();
+          }, speed);
+      }
+      // intervalRef.current = setInterval(() => {
+      //   handleTurnhyperActiveLifeRules();
+      // }, speed);
     } else {
       clearInterval(intervalRef.current);
     }
@@ -113,7 +165,15 @@ export default function Game() {
     return () => {
       clearInterval(intervalRef.current);
     };
-  }, [isPlaying, board, speed, handleTurn, gridSize]);
+  }, [
+    isPlaying,
+    board,
+    speed,
+    gameRules,
+    handleTurnConnwaysRules,
+    handleTurnhyperActiveLifeRules,
+    gridSize,
+  ]);
 
   function resizeBoard(size) {
     setGridSize(size);
@@ -122,7 +182,7 @@ export default function Game() {
       .map(() => Array(size).fill(false));
     setBoard(newSizeArr);
   }
-
+  console.log(gameRules);
   return (
     <div className="game-div">
       <div className="headers">
@@ -138,6 +198,19 @@ export default function Game() {
           value={gridSize}
           onChange={(e) => resizeBoard(Number(e.target.value))}
         />
+        <h2>change game rules:</h2>
+        <select
+          name="rules"
+          id="rules"
+          onChange={(e) => setGameRules(String(e.target.value))}
+        >
+          <option value="connways rules">connways rules</option>
+          <option value="hyper active life rules">
+            hyper active life rules
+          </option>
+          {/* <option value="opel">Opel</option>
+          <option value="audi">Audi</option> */}
+        </select>
 
         <h4>change seed size</h4>
         <input
