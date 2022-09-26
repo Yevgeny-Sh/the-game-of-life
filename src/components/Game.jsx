@@ -55,27 +55,27 @@ export default function Game() {
       if (row - 1 >= 0 && col - 1 >= 0) {
         if (board[row - 1][col - 1] === true) count++;
       }
-      //check north east
+      //check north east square
       if (row - 1 >= 0 && col + 1 < gridSize) {
         if (board[row - 1][col + 1] === true) count++;
       }
-      //check west
+      //check west square
       if (col - 1 >= 0) {
         if (board[row][col - 1] === true) count++;
       }
-      //chec east
+      //check east square
       if (col + 1 < gridSize) {
         if (board[row][col + 1] === true) count++;
       }
-      // check south
+      // check south square
       if (row + 1 < gridSize) {
         if (board[row + 1][col] === true) count++;
       }
-      //check south west
+      //check south west square
       if (row + 1 < gridSize && col - 1 >= 0) {
         if (board[row + 1][col - 1] === true) count++;
       }
-      //check south east
+      //check south east square
       if (row + 1 < gridSize && col + 1 < gridSize) {
         if (board[row + 1][col + 1] === true) count++;
       }
@@ -111,6 +111,7 @@ export default function Game() {
   }, [aliveNeighbors, gridSize, isAlive]);
 
   //diffrent game rules
+  //hyper active life
   const handleTurnhyperActiveLifeRules = useCallback(() => {
     let newGrid = Array(gridSize)
       .fill()
@@ -137,10 +138,78 @@ export default function Game() {
     setBoard(newGrid);
   }, [aliveNeighbors, gridSize, isAlive]);
 
+  //Spontaneous rules
+  const handleTurndSpontaneous = useCallback(() => {
+    let newGrid = Array(gridSize)
+      .fill()
+      .map(() => Array(gridSize).fill(false));
+    for (let rows = 0; rows < gridSize; rows++) {
+      for (let col = 0; col < gridSize; col++) {
+        let neighbors = aliveNeighbors(rows, col);
+        if (isAlive(rows, col)) {
+          if (neighbors < 2 || neighbors > 3) {
+            newGrid[rows][col] = false;
+          } else {
+            newGrid[rows][col] = true;
+          }
+          //if cell is dead
+        } else {
+          if (neighbors === 3) {
+            newGrid[rows][col] = true;
+          } else {
+            //0.5 chance to spontaneously revive a dead cell
+            if (Math.floor(Math.random() * 10) > 4) {
+              newGrid[rows][col] = true;
+            }
+          }
+        }
+      }
+    }
+    setGeneretion((prevGen) => prevGen + 1);
+    setBoard(newGrid);
+  }, [aliveNeighbors, gridSize, isAlive]);
+
+  //stable state rules
+  const handleTurnStableStateRules = useCallback(() => {
+    let newGrid = Array(gridSize)
+      .fill()
+      .map(() => Array(gridSize).fill(false));
+
+    const emptyGrid = Array(gridSize)
+      .fill()
+      .map(() => Array(gridSize).fill(false));
+
+    for (let rows = 0; rows < gridSize; rows++) {
+      for (let col = 0; col < gridSize; col++) {
+        let neighbors = aliveNeighbors(rows, col);
+        if (isAlive(rows, col)) {
+          if (neighbors < 2 || neighbors > 3) {
+            newGrid[rows][col] = false;
+          } else {
+            newGrid[rows][col] = true;
+          }
+          //if cell is dead
+        } else {
+          if (neighbors === 3) {
+            newGrid[rows][col] = true;
+          }
+        }
+      }
+    }
+    setGeneretion((prevGen) => prevGen + 1);
+
+    setBoard(newGrid);
+    //a way to compare 2 arrays
+    if (JSON.stringify(newGrid) === JSON.stringify(board)) {
+      console.log("stringify");
+      setBoard(emptyGrid);
+    }
+  }, [aliveNeighbors, gridSize, isAlive, board]);
+
   useEffect(() => {
     if (isPlaying) {
       switch (gameRules) {
-        case "connways":
+        case "connways rules":
           intervalRef.current = setInterval(() => {
             handleTurnConnwaysRules();
           }, speed);
@@ -150,18 +219,24 @@ export default function Game() {
             handleTurnhyperActiveLifeRules();
           }, speed);
           break;
+        case "Spontaneous rules":
+          intervalRef.current = setInterval(() => {
+            handleTurndSpontaneous();
+          }, speed);
+          break;
+        case "stable state rules":
+          intervalRef.current = setInterval(() => {
+            handleTurnStableStateRules();
+          }, speed);
+          break;
         default:
           intervalRef.current = setInterval(() => {
             handleTurnConnwaysRules();
           }, speed);
       }
-      // intervalRef.current = setInterval(() => {
-      //   handleTurnhyperActiveLifeRules();
-      // }, speed);
     } else {
       clearInterval(intervalRef.current);
     }
-
     return () => {
       clearInterval(intervalRef.current);
     };
@@ -172,6 +247,8 @@ export default function Game() {
     gameRules,
     handleTurnConnwaysRules,
     handleTurnhyperActiveLifeRules,
+    handleTurndSpontaneous,
+    handleTurnStableStateRules,
     gridSize,
   ]);
 
@@ -182,7 +259,6 @@ export default function Game() {
       .map(() => Array(size).fill(false));
     setBoard(newSizeArr);
   }
-  console.log(gameRules);
   return (
     <div className="game-div">
       <div className="headers">
@@ -208,8 +284,8 @@ export default function Game() {
           <option value="hyper active life rules">
             hyper active life rules
           </option>
-          {/* <option value="opel">Opel</option>
-          <option value="audi">Audi</option> */}
+          <option value="Spontaneous rules">Spontaneous rules</option>
+          <option value="stable state rules">stable state rules</option>
         </select>
 
         <h4>change seed size</h4>
