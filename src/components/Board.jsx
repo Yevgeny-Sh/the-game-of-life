@@ -1,6 +1,8 @@
 import React, { useRef, useEffect } from "react";
 import Square from "./Square";
 
+//try to set age in ise effect
+
 export default function Board(props) {
   const boardRef = useRef(null);
 
@@ -19,6 +21,7 @@ export default function Board(props) {
           className={props.isAlive(i, j) === true ? "green" : "red"}
           key={` ${i}+${j}`}
           aliveNeighbors={props.aliveNeighbors}
+          // age={}
         ></Square>
       );
     });
