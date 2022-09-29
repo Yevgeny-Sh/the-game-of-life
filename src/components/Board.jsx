@@ -16,7 +16,8 @@ export default function Board(props) {
         <Square
           x={i}
           y={j}
-          live={props.isAlive(i, j).toString()}
+          // live={props.isAlive(i, j).toString()}
+          live={props.isAlive(i, j)}
           setAlive={props.setAlive}
           className={props.isAlive(i, j) === true ? "green" : "red"}
           key={` ${i}+${j}`}

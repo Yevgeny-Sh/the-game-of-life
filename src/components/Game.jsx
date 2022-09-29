@@ -201,7 +201,6 @@ export default function Game() {
     setBoard(newGrid);
     //a way to compare 2 arrays
     if (JSON.stringify(newGrid) === JSON.stringify(board)) {
-      console.log("stringify");
       setBoard(emptyGrid);
     }
   }, [aliveNeighbors, gridSize, isAlive, board]);

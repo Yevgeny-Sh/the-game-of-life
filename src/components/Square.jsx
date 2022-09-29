@@ -1,13 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 
 export default function Square(props) {
-  //let liveNeighbors = props.aliveNeighbors(props.x, props.y);
-
-  // const [age, setage] = useState(0);
-
-  // if (props.live) {
-  //   setage(age + 1);
-  // }
   return (
     <div className="square">
       <button
