@@ -265,15 +265,7 @@ export default function Game() {
         <h2>generation :{generetion} </h2>
       </div>
       <div className="instructions">
-        <h4>change grid size</h4>
-        <input
-          type="range"
-          min="1"
-          max="30"
-          value={gridSize}
-          onChange={(e) => resizeBoard(Number(e.target.value))}
-        />
-        <h2>change game rules:</h2>
+        <h4>change game rules:</h4>
         <select
           name="rules"
           id="rules"
@@ -286,6 +278,14 @@ export default function Game() {
           <option value="Spontaneous rules">Spontaneous rules</option>
           <option value="stable state rules">stable state rules</option>
         </select>
+        <h4>change grid size</h4>
+        <input
+          type="range"
+          min="1"
+          max="30"
+          value={gridSize}
+          onChange={(e) => resizeBoard(Number(e.target.value))}
+        />
 
         <h4>change seed size</h4>
         <input
